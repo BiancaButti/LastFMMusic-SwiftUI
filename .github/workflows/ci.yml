@@ -1,4 +1,4 @@
-name: iOS CI
+name: CI
 
 on:
   push:
@@ -9,36 +9,25 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  build:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set up Ruby (for Bundler & SwiftLint)
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.1
+    - name: Install SwiftLint
+      run: |
+        brew install swiftlint
 
-      - name: Install dependencies with Bundler
-        run: |
-          gem install bundler
-          bundle install
+    - name: Run SwiftLint
+      run: swiftlint --strict
 
-      - name: Run SwiftLint
-        run: bundle exec swiftlint --strict
-
-      - name: Build app
-        run: |
-          xcodebuild clean build \
-            -scheme LastFMMusic \
-            -destination 'platform=iOS Simulator,name=iPhone 14,OS=latest' \
-            | xcpretty
-
-      - name: Run tests
-        run: |
-          xcodebuild test \
-            -scheme LastFMMusic \
-            -destination 'platform=iOS Simulator,name=iPhone 14,OS=latest' \
-            | xcpretty
+    - name: Build and test
+      run: |
+        xcodebuild clean build test \
+          -project LastFMMusic.xcodeproj \
+          -scheme LastFMMusic \
+          -sdk iphonesimulator \
+          -destination 'platform=iOS Simulator,name=iPhone 14' \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
