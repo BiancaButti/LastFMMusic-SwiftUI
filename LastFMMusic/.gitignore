@@ -1,5 +1,6 @@
 # macOS
 .DS_Store
+Mintfile
 
 # Xcode
 build/
@@ -23,9 +24,6 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
-
-# Mint
-Mintfile
 
 # Carthage
 Carthage/Build/
