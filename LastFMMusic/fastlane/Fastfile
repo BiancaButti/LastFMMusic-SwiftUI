@@ -1,0 +1,35 @@
+default_platform(:ios)
+
+platform :ios do
+
+  desc "Rodar SwiftLint via Homebrew"
+  lane :lint do
+    sh("mint run swiftlint")
+  end
+
+  desc "Rodar testes unitários"
+  lane :test do
+    scan
+  end
+
+  desc "Build local de desenvolvimento"
+  lane :build do
+    build_app(
+      scheme: "LastFMMusic",
+      clean: true,
+      export_method: "development"
+    )
+  end
+
+  desc "Lint + Testes + Build"
+  lane :ci do
+    sh("mint run swiftlint")
+    scan
+    build_app(
+      scheme: "LastFMMusic",
+      clean: true,
+      export_method: "development"
+    )
+  end
+
+end

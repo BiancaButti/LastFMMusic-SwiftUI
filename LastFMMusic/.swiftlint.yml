@@ -1,0 +1,43 @@
+# Caminhos ignorados pelo SwiftLint
+excluded:
+  - Carthage
+  - Pods
+  - SwiftLintTests
+  - Generated
+
+# Regras desativadas
+disabled_rules:
+  - force_cast
+  - force_unwrapping
+
+# Regras opt-in (não vêm ativadas por padrão)
+opt_in_rules:
+  - explicit_init
+  - fatal_error_message
+  - empty_count
+  - implicitly_unwrapped_optional
+  - discouraged_optional_boolean
+
+# Regras com configuração personalizada
+
+line_length:
+  warning: 120
+  error: 150
+  ignores_comments: true
+  ignores_urls: true
+
+type_body_length:
+  warning: 300
+  error: 400
+
+function_body_length:
+  warning: 40
+  error: 75
+
+identifier_name:
+  min_length: 3
+  max_length: 40
+  excluded:
+    - id
+    - x
+    - y
