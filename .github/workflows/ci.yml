@@ -32,6 +32,7 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Run SwiftLint
-        uses: norio-nomura/action-swiftlint@v3
+        uses: norio-nomura/action-swiftlint@v2
         with:
-          strict: true
+          swiftlint_version: '0.52.4'
+
