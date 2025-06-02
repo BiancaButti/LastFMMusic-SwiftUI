@@ -18,8 +18,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Cache Ruby gems
+        uses: actions/cache@v4
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install dependencies with Bundler
+        run: |
+          bundle config set path 'vendor/bundle'
+          bundle install --jobs 4 --retry 3
+
       - name: Install SwiftLint
         run: brew install swiftlint
 
       - name: Run SwiftLint
         run: swiftlint --strict
+
+      - name: Build and test
+        run: |
+          xcodebuild clean build test \
+            -project LastFMMusic.xcodeproj \
+            -scheme LastFMMusic \
+            -sdk iphonesimulator \
+            -destination "platform=iOS Simulator,name=iPhone 14" \
+            CODE_SIGN_IDENTITY= \
+            CODE_SIGNING_REQUIRED=NO
+
